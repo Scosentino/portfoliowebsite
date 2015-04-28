@@ -1,8 +1,4 @@
 require 'sinatra'
-require 'httparty'
-require 'json'
-require 'nokogiri'
-
 
 set :public_folder, File.dirname(__FILE__) + '/public/Portfolio'
 

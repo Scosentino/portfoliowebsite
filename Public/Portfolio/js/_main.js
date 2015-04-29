@@ -8,6 +8,24 @@
  * Article URL: http://ihatetomatoes.net/simple-parallax-scrolling-tutorial/
  */
 
+
+
+// $(document).on("ready", function(){
+// 	$("#nav_new").on("hover", function(){
+// 		$(this).hide();
+// 	})
+// })
+
+// $(document).ready(function(){
+// 	$("#nav_new").hide();
+// 	$("#nav_new").hover(function(){
+// 		$(this).show();
+// 	})
+ 
+// })
+
+
+
 ( function( $ ) {
 	
 	// Setup variables

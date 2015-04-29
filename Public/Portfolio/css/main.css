@@ -120,9 +120,10 @@ body {
 h2 {
 	margin-top: 0;
 }
-.loading {
+/*.loading {
 	background: url('../img/ico_loading.gif') no-repeat center center;
-}
+}*/
+
 section {
 	min-width: 960px;
 	opacity: 0;
@@ -416,7 +417,49 @@ main {
     }
 }
 /* New Work By Sc below */
-#skills {
+
+#nav ul ul {
+    display: none;
+
+}
+
+#nav {
+    margin-top:;
+    margin-bottom:;
+    margin-left:;
+    margin-right:;
+}
+
+#nav ul:hover li {
+    display: block;
+}
+
+/*nav {
+    position: iniital;
+    background-color: #FFFFFF;
+}
+
+
+
+
+nav :hover ul  {
+    display: block;
+    
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+/*#skills {
     font-weight: bold;
     font-size: 23px;
     margin-left: -160%;
@@ -439,9 +482,9 @@ menu, ol, ul {
 
 .int_list {
     font-size: : 50px;
-}
+}*/
 
-.profile {
+/*.profile {
 
     -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
     -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -460,16 +503,16 @@ menu, ol, ul {
     padding:6px 24px;
     text-decoration:none;
     text-shadow:0px 1px 0px #ffffff;
-}
+}*/
 
 
-.profile:hover {
+/*.profile:hover {
     background-color:transparent;
 }
 .profile:active {
     position:relative;
     top:1px;
-}
+}*/
 
 /*#nav_bar {
 
@@ -479,7 +522,7 @@ menu, ol, ul {
 
 }*/
 
-#badge {
+/*#badge {
     height: 221px;
     width: 163px;
     background-color: blue;
@@ -497,40 +540,39 @@ menu, ol, ul {
 
 
 
-nav ul {
+#nav ul {
     padding: 0px;
     margin: 0px;
 
 }
 
-nav ul ul {
-       position: absolute;
+#nav ul ul {
     display: none;
 
 }
 
-nav li:hover ul {
+#nav ul li:hover > ul {
     display: block;
 
+}*/
 
-}
-
+/*#navdisplay:hover ul  {
+    display: block;
+    background-color: black;
+}*/
+/*
 nav {
-    height: 40px;
-    background-color: white;
-    /*opacity: 0.4;*/
-    
+    height: 25px;
+    position: fixed;
+    background-color: red;
+    opacity: .4;
+}*/
 
-}
-
-#menu-pic {
+/*#menu-pic {
     height: 30px;
     width: 30px;
     margin-top: 4.5px;
-
-
-
-}
+}*/
 
 /*nav .nav-wrapper ul hover ul {
     display: block;

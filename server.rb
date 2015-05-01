@@ -9,6 +9,6 @@ set :public_folder, File.dirname(__FILE__) + '/public/'
 # end
 
 get '/' do
-  send_file File.join(settings.public_folder, 'index.html')
+  send_file File.join(settings.public_folder, 'public/index.html')
 end
 

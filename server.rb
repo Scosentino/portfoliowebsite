@@ -1,6 +1,6 @@
 require 'sinatra'
 
-set :public_folder, File.dirname(__FILE__) + '/public/'
+
 
 #Why/how do i add visuals to this page?
 
@@ -9,6 +9,6 @@ set :public_folder, File.dirname(__FILE__) + '/public/'
 # end
 
 get '/' do
-  send_file File.join(settings.public_folder, 'public/index.html')
+  send_file File.join(settings.public_folder, 'index.html')
 end
 

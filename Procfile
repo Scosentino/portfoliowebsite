@@ -1,1 +1,1 @@
-web: target/start -Dhttp.port=${PORT}
+web: ruby server.rb -p $PORT

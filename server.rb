@@ -1,6 +1,6 @@
 require 'sinatra'
 
-set :public_folder, File.dirname(__FILE__) + '/public/Portfolio'
+set :public_folder, File.dirname(__FILE__) + '/public/'
 
 #Why/how do i add visuals to this page?
 
@@ -8,7 +8,7 @@ set :public_folder, File.dirname(__FILE__) + '/public/Portfolio'
 # 	p "#{Time.now}"	#block of ruby code executed when 
 # end
 
-get '/g' do
-  "Hello World"
+get '/' do
+  send_file File.join(settings.public_folder, 'index.html')
 end
 

@@ -1,9 +1,0 @@
-// divaCommon.js v1.4;
-/*addEvent was created by Dustin Diaz http://www.dustindiaz.com. under this license: http://creativecommons.org/licenses/LGPL/2.1/ and with modifications offered in comments to dustin's page by Konstantin Pelepelin*/
-function vwd_addEvent(_1,_2,fn){if(_1.addEventListener){_1.addEventListener(_2,fn,false);EventCache.add(_1,_2,fn);}else{if(_1.attachEvent){_1["e"+_2+fn]=fn;_1[_2+fn]=function(){_1["e"+_2+fn](window.event);};_1.attachEvent("on"+_2,_1[_2+fn]);EventCache.add(_1,_2,fn);}else{if(typeof _1["on"+_2]!="function"){_1["on"+_2]=fn;}else{var _4=_1["on"+_2];_1["on"+_2]=function(){_4();fn();};}}}}var EventCache=function(){var _5=[];return {listEvents:_5,add:function(_6,_7,_8){_5[_5.length]=arguments;},flush:function(){var i,item;for(i=_5.length-1;i>=0;i=i-1){item=_5[i];if(item[0].removeEventListener){item[0].removeEventListener(item[1],item[2],item[3]);}if(item[1].substring(0,2)!="on"){item[1]="on"+item[1];}if(item[0].detachEvent){item[0].detachEvent(item[1],item[2]);}item[0][item[1]]=null;}}};}();vwd_addEvent(window,"unload",EventCache.flush);
-
-//v1.0 Copyright 2006-2007 TJKDesign-Thierry Koblentz
-function TJK_moveNodes(_a,_b,_c){if(!document.createElement){return;}var _d=(_b)?_b:document.createElement(_c);while(_a.childNodes.length){_d.appendChild(_a.childNodes[0]);}if(_c){_a.appendChild(_d);}}
-
-// v1.0 Based on Simon Willison, http://simonwillison.net/2003/Jun/15/javascriptWithXML/
-function diva_createE(_e){if(typeof document.createElementNS!="undefined"){return document.createElementNS("http://www.w3.org/1999/xhtml",_e);}return document.createElement(_e);}

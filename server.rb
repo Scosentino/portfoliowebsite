@@ -10,18 +10,12 @@ require 'browser'
 # 	p "#{Time.now}"	#block of ruby code executed when
 # end
 
-browser = Browser.new
-
-
-if browser.mobile? == false
-	get '/' do
-	  File.read(File.join('public', 'index.html.erb'))
-	end
-elsif browser.mobile? == true
-	get '/' do
-		File.read(File.join('public', 'mobileindex.html'))
-	end
-else
-	raise
+get '/' do
+ browser = Browser.new(ua: request.user_agent, accept_language: request.accept_language)
+ if browser.mobile?
+    File.read(File.join('public', 'mobileindex.html'))
+ else
+   File.read(File.join('public', 'index.html.erb'))
+ end
 end
 

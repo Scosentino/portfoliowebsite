@@ -1,0 +1,455 @@
+<html>
+<HEAD><TITLE>The Fish House Lunch Menu - DessertsL</TITLE>
+<meta http-equiv="Content-Style-Type" content="text/css">
+<LINK HREF="style.css" TYPE="text/css" REL="stylesheet">
+<META name="description" content="The Fish House, Key Largo, features the best in local South Florida seafood. Visit our restaurant or have it shipped to your home. We ship everywhere!">
+<META name="keywords" content="seafood, restaurant, fresh, fish, shipped overnight, key, largo, shipping, fish, take-out, seafood, fish, seafood, fresh fish, restaurant, fish, conch, lobster, crab, take-out, seafood, florida, fish, shipping, seafood, clambake, restarant, take out, dining, lobster, Keys">
+<META name="distribution" content="global">
+</HEAD>
+
+<body>
+<center>
+
+
+<div id="dot0" style="position: absolute; visibility: hidden; height: 28; width: 40;">
+	<img src="yellowfish.gif" width="40" height="28">
+
+</div>
+<div id="dot1" style="position: absolute; height: 16; width: 24;">
+	<img src="yellowfish.gif" width="40" height="28">
+</div>
+<div id="dot2" style="position: absolute; height: 16; width: 24;">
+	<img src="yellowfish.gif" width="40" height="28">
+</div>
+<div id="dot3" style="position: absolute; height: 16; width: 24;">
+	<img src="yellowfish.gif" width="40" height="28">
+</div>
+<div id="dot4" style="position: absolute; height: 16; width: 24;">
+	<img src="yellowfish.gif" width="40" height="28">
+</div>
+
+<div id="dot5" style="position: absolute; height: 16; width: 24;">
+	<img src="yellowfish.gif" width="40" height="28">
+</div>
+<div id="dot6" style="position: absolute; height: 16; width: 24;">
+	<img src="yellowfish.gif" width="40" height="28"> 
+</div>
+
+<script LANGUAGE="JavaScript">
+<!-- hide code
+
+/*
+*/
+
+var nDots = 7;
+
+var Xpos = 0;
+var Ypos = 0;
+
+  // fixed time step, no relation to real time
+var DELTAT = .01;
+  // size of one spring in pixels
+var SEGLEN = 10;
+  // spring constant, stiffness of springs
+var SPRINGK = 10;
+  // all the physics is bogus, just picked stuff to
+  // make it look okay
+var MASS = 1;
+// Positive XGRAVITY pulls right, negative pulls left
+// Positive YGRAVITY pulls down, negative up
+var XGRAVITY = 0;
+var YGRAVITY = 50;
+// RESISTANCE determines a slowing force proportional to velocity
+var RESISTANCE = 10;
+  // stopping criterea to prevent endless jittering
+  // doesn't work when sitting on bottom since floor
+  // doesn't push back so acceleration always as big
+  // as gravity
+var STOPVEL = 0.1;
+var STOPACC = 0.1;
+var DOTSIZE = 10;
+  // BOUNCE is percent of velocity retained when 
+  // bouncing off a wall
+var BOUNCE = 0.75;
+
+var isNetscape = navigator.appName=="Netscape";
+
+  // always on for now, could be played with to
+  // let dots fall to botton, get thrown, etc.
+var followmouse = true;
+
+var dots = new Array();
+init();
+
+function init()
+{
+    var i = 0;
+    for (i = 0; i < nDots; i++) {
+        dots[i] = new dot(i);
+    }
+    
+    if (!isNetscape) {
+        // I only know how to read the locations of the 
+        // <LI> items in IE
+        //skip this for now
+        // setInitPositions(dots)
+    }
+    
+    // set their positions
+    for (i = 0; i < nDots; i++) {
+        dots[i].obj.left = dots[i].X;
+        dots[i].obj.top = dots[i].Y;
+    }
+    
+    
+    if (isNetscape) {
+        // start right away since they are positioned
+        // at 0, 0
+        startanimate();
+    } else {
+        // let dots sit there for a few seconds
+        // since they're hiding on the real bullets
+        setTimeout("startanimate()", 1000);
+    }
+}
+
+
+
+function dot(i) 
+{
+    this.X = Xpos;
+    this.Y = Ypos;
+    this.dx = 0;
+    this.dy = 0;
+    if (isNetscape) {	
+        this.obj = eval("document.dot" + i);
+    } else {
+        this.obj = eval("dot" + i + ".style");
+    }
+}
+
+
+function startanimate() {	
+    setInterval("animate()", 20);
+}
+
+
+// This is to line up the bullets with actual LI tags on the page
+// Had to add -DOTSIZE to X and 2*DOTSIZE to Y for IE 5, not sure why
+// Still doesn't work great
+function setInitPositions(dots)
+{
+    // initialize dot positions to be on top 
+    // of the bullets in the <ul>
+    var startloc = document.all.tags("LI");
+    var i = 0;
+    for (i = 0; i < startloc.length && i < (nDots - 1); i++) {
+        dots[i+1].X = startloc[i].offsetLeft
+            startloc[i].offsetParent.offsetLeft - DOTSIZE;
+        dots[i+1].Y = startloc[i].offsetTop +
+            startloc[i].offsetParent.offsetTop + 2*DOTSIZE;
+    }
+    // put 0th dot above 1st (it is hidden)
+    dots[0].X = dots[1].X;
+    dots[0].Y = dots[1].Y - SEGLEN;
+}
+
+// just save mouse position for animate() to use
+function MoveHandler(e)
+{
+    Xpos = e.pageX;
+    Ypos = e.pageY;	  
+    return true;
+}
+
+// just save mouse position for animate() to use
+function MoveHandlerIE() {
+    Xpos = window.event.x + document.body.scrollLeft;
+    Ypos = window.event.y + document.body.scrollTop;	  
+}
+
+if (isNetscape) {
+    document.captureEvents(Event.MOUSEMOVE);
+    document.onMouseMove = MoveHandler;
+} else {
+    document.onmousemove = MoveHandlerIE;
+}
+
+
+function vec(X, Y)
+{
+    this.X = X;
+    this.Y = Y;
+}
+
+// adds force in X and Y to spring for dot[i] on dot[j]
+function springForce(i, j, spring)
+{
+    var dx = (dots[i].X - dots[j].X);
+    var dy = (dots[i].Y - dots[j].Y);
+    var len = Math.sqrt(dx*dx + dy*dy);
+    if (len > SEGLEN) {
+        var springF = SPRINGK * (len - SEGLEN);
+        spring.X += (dx / len) * springF;
+        spring.Y += (dy / len) * springF;
+    }
+}
+
+
+function animate() {	
+    // dots[0] follows the mouse,
+    // though no dot is drawn there
+    var start = 0;
+    if (followmouse) {
+        dots[0].X = Xpos;
+        dots[0].Y = Ypos;	
+        start = 1;
+    }
+    
+    for (i = start ; i < nDots; i++ ) {
+        
+        var spring = new vec(0, 0);
+        if (i > 0) {
+            springForce(i-1, i, spring);
+        }
+        if (i < (nDots - 1)) {
+            springForce(i+1, i, spring);
+        }
+        
+        // air resisitance/friction
+        var resist = new vec(-dots[i].dx * RESISTANCE,
+            -dots[i].dy * RESISTANCE);
+        
+        // compute new accel, including gravity
+        var accel = new vec((spring.X + resist.X)/MASS + XGRAVITY,
+            (spring.Y + resist.Y)/ MASS + YGRAVITY);
+        
+        // compute new velocity
+        dots[i].dx += (DELTAT * accel.X);
+        dots[i].dy += (DELTAT * accel.Y);
+        
+        // stop dead so it doesn't jitter when nearly still
+        if (Math.abs(dots[i].dx) < STOPVEL &&
+            Math.abs(dots[i].dy) < STOPVEL &&
+            Math.abs(accel.X) < STOPACC &&
+            Math.abs(accel.Y) < STOPACC) {
+            dots[i].dx = 0;
+            dots[i].dy = 0;
+        }
+        
+        // move to new position
+        dots[i].X += dots[i].dx;
+        dots[i].Y += dots[i].dy;
+        
+        // get size of window
+        var height, width;
+        if (isNetscape) {
+            height = window.innerHeight + window.pageYOffset;
+            width = window.innerWidth + window.pageXOffset;
+        } else {	
+            height = document.body.clientHeight + document.body.scrollTop;
+            width = document.body.clientWidth + document.body.scrollLeft;
+        }
+        
+        // bounce off 3 walls (leave ceiling open)
+        if (dots[i].Y >=  height - DOTSIZE - 1) {
+            if (dots[i].dy > 0) {
+                dots[i].dy = BOUNCE * -dots[i].dy;
+            }
+            dots[i].Y = height - DOTSIZE - 1;
+        }
+        if (dots[i].X >= width - DOTSIZE) {
+            if (dots[i].dx > 0) {
+                dots[i].dx = BOUNCE * -dots[i].dx;
+            }
+            dots[i].X = width - DOTSIZE - 1;
+        }
+        if (dots[i].X < 0) {
+            if (dots[i].dx < 0) {
+                dots[i].dx = BOUNCE * -dots[i].dx;
+            }
+            dots[i].X = 0;
+        }
+        
+        // move img to new position
+        dots[i].obj.left = dots[i].X;			
+        dots[i].obj.top =  dots[i].Y;		
+    }
+}
+
+// end code hiding -->
+</script>
+
+
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>&nbsp;</td>
+    <td width="631" align="left" valign="top"><table width="631"  border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="231" align="left" valign="top"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+<br><br>
+<td width="631"><a href="contact.html"><img src="images/header.jpg" width="631" height="155" border="0"></a></td>
+<tr>
+            <td height="30" align="left" valign="top" background="images/back_1.jpg" style="background-position:bottom; background-repeat:no-repeat "><div style="padding-left:8px; padding-top:0px">
+              <table width="621" height="10"  border="0" cellpadding="0" cellspacing="0">
+               
+              </table>
+              </div></td>
+          </tr>
+          <tr>
+            <td align="left" valign="top"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td><a href="fishhousemenu.html"><img src="images/banner_1.jpg" width="319" height="112" border="0"></a></td>
+                <td><a href="encoremenu.html"><img src="images/banner_2.jpg" width="312" height="112" border="0"></a></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+
+        <td align="left" valign="top" style="border-left:2px solid #ffffff; border-right:1px solid #ffffff "><table width="628"  border="0" cellspacing="0" cellpadding="0">
+          <tr align="left" valign="top">
+            <td width="179" height="100%"><table width="179" height="200"  border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td height="62" align="left" valign="top"><img src="images/mix.jpg" width="179" height="62"></td>
+                           <tr>
+                <td height="100%" align="left" valign="top"><table width="179" height="175"  border="0" cellpadding="0" cellspacing="0" background="images/rep_1.jpg">
+                  <tr>
+                    <td height="5" align="left" valign="top"><img src="images/bot_1.jpg" width="179" height="5"></td>
+                  </tr>
+                  <tr>
+                    <td align="left" valign="top"><div style="padding-left:17px; padding-top:7px; padding-bottom:19px">
+                      <table width="145" height="21"  border="0" cellpadding="0" cellspacing="0" background="images/rep_2.jpg" style="background-position:top left; background-repeat:repeat-y ">
+                        <tr>
+                          <td height="21" align="left" valign="top"><div style="padding-left:10px; padding-top:5px"><a href="fishhousehistory.html" class="style1" style="text-decoration:none ">Our History</a></div></td>
+                        </tr>
+                        <tr>
+                          <td height="21" align="left" valign="top"><div style="padding-left:10px; padding-top:5px"><a href="fishhouselunch.html" class="style1" style="text-decoration:none ">Lunch Menu</a></div></td>
+                        </tr>
+                        <tr>
+                          <td height="21" align="left" valign="top"><div style="padding-left:10px; padding-top:5px"><a href="fishhousedinner.html" class="style1" style="text-decoration:none ">Dinner Menu</a></div></td>
+                        </tr>
+                        <tr>
+                          <td height="21" align="left" valign="top"><div style="padding-left:10px; padding-top:5px"><a href="fhkids.html" class="style1" style="text-decoration:none ">Kids Menu</a></div></td>
+                        </tr>
+                        <tr>
+                          <td height="21" align="left" valign="top"><div style="padding-left:10px; padding-top:5px"><a href="awards.html" class="style1" style="text-decoration:none ">Reviews and Awards</a></div></td>
+                        </tr>
+                        <tr>
+                          <td height="21" align="left" valign="top"><div style="padding-left:10px; padding-top:5px"><a href="fishhousephotos.html" class="style1" style="text-decoration:none ">Photo Gallery</a></div></td>
+                        </tr>
+                        <tr>
+                          <td height="21" align="left" valign="top"><div style="padding-left:10px; padding-top:5px"><a href="hours.html" class="style1" style="text-decoration:none ">Hours of Operation</a></div></td>
+                        </tr>
+                                </tr>
+                       </table>
+                      </div></td>
+                  </tr>
+
+                  <tr>
+                    <td height="4" align="left" valign="top"><img src="images/bot_2.jpg" width="179" height="4"></td>
+                  </tr>
+                </table> <tr>
+                    <td height="5" align="left" valign="top"><img src="images/spacer.gif" width="1" height="5"></td>
+                  </tr>
+<tr>
+                    <td align="right" valign="top"><a href="fishmarket.html"><img src="images/fishmarket.jpg" width="179" height="105" border="0"></a></td>
+                  </tr><p>
+<tr>
+                    <td align="right" valign="top"><a href="bobby.html"><img src="images/bobby.jpg" width="179" height="105" border="0" cellpadding="10"></a></td>
+    
+                  </tr>
+
+
+
+</td>
+              </tr>
+            </table></td>
+            <td height="100%"><table width="449" height="100%"  border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="left" valign="top" background="images/line_3.jpg" style="background-repeat:no-repeat; background-position:bottom left "><div style="padding-left:24px; padding-top:31px"><img src="images/bl_3.jpg" width="130" height="10"></div>                 
+<div class="style3" style="padding-left:25px; padding-top:10px">The Fish House Lunch Menu<br>Desserts</div>
+
+  <div style="padding-left:25px; padding-top:12px"><span class="style1"><strong>Key Lime Pie</strong><br>
+The Fish House's award winning recipe - homemade by Chef Jose.<br>
+4.99<p></div>
+
+<div style="padding-left:25px; padding-top:12px"><span class="style1">
+
+<strong> Oreo Cheesecake </strong><br>
+Oreo crust hold this creamy cheesecake that is loaded with oreo cookies throughout, topped with chocolate and chunks of cookies. <br> 
+4.99 <p>
+</div>
+<div style="padding-left:25px; padding-top:12px"><span class="style1"><strong> Peanut Butter Pie </strong><br>
+Melts in your mouth! Peanut butter filling in a graham cracker crust, topped with real chunks of Reese's Peanut Butter Cups with chocolate swirls. <br> 
+4.99 <p></div>
+
+<div style="padding-left:25px; padding-top:12px"><span class="style1"><strong>Homemade Ice Cream</strong><br>
+Homemade Fish House ice cream, served in a coconut shell with whipped cream. Flavor selection changes. <br>
+4.99<p></div>
+
+
+
+<div style="padding-left:25px; padding-top:12px"><span class="style1"> </span>
+</div>
+
+
+</span></div>                  <div style="padding-left:25px; padding-top:5px; padding-bottom:14px">
+             
+
+              <tr>
+                <td height="22" align="left" valign="top"><img src="images/spacer.gif" width="1" height="22"></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+
+ <tr>
+        <td align="left" valign="top"><table width="100%" height="7"  border="0" cellpadding="0" cellspacing="0">
+          <tr align="left" valign="top">
+                      <img src="images/encoreline.jpg" width="631" height="30"></td>
+                 </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><div align="center" class="style4" style="padding-top:17px;  "><span class="style2"><strong>Encore:</strong> <a href="encorehistory.html" class="style4" style="text-decoration:none ">Our History</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="encoremenu.html" class="style4" style="text-decoration:none ">Dinner Menu</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="encorehour.html" class="style4" style="text-decoration:none ">Happy Hour</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="encorekids.html" class="style4" style="text-decoration:none ">Kids Menu</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="encoreentertainment.html" class="style4" style="text-decoration:none ">Entertainment</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="encorephotos.html" class="style4" style="text-decoration:none ">Photo Gallery</a></div>
+         <div style="padding-left:0px; padding-top:0px">
+
+<br>
+
+
+    <tr>
+        <td align="left" valign="top"><table width="100%" height="7"  border="0" cellpadding="0" cellspacing="0">
+          <tr align="left" valign="top">
+           <td height="30" align="left" valign="top" background="images/back_1.jpg" style="background-position:bottom; background-repeat:no-repeat ">
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+               <td align="left" valign="top"><div align="center" class="style4" style="padding-top:17px;  "><a href="index.html" class="style4" style="text-decoration:none ">Home</a>
+&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="location.html" class="style4" style="text-decoration:none ">Location</a>
+
+&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="directions.html" class="style4" style="text-decoration:none ">Directions</a>
+
+&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="contact.html" class="style4" style="text-decoration:none ">Contacts</a>
+&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="difference.html" class="style4" style="text-decoration:none ">Difference Between the Fish House and Encore</a>
+
+</div>
+         <div style="padding-left:0px; padding-top:0px">
+           <div align="center" style="padding-top:10px "><a href="fishhousehistory.html" class="style4" style="text-decoration:none ">Copyright &copy; The Fish House Restaurant and Seafood Market, 2006. All Rights Reserved</a></div>
+         </div></td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td width="631" align="left" valign="top">&nbsp;</td>
+    <td>&nbsp;</td>
+<EMBED SRC="mermaid.mid" HEIGHT=25 WIDTH=50 AUTOSTART=TRUE HIDDEN=TRUE loop=true>
+</body>
+</html>
+

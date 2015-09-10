@@ -1,0 +1,91 @@
+body {
+	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+	padding: 0;
+	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+	color: #F00;
+	background-color: #BCDCDE;
+	background-image: url(images/background.jpg);
+	background-attachment: scroll;
+	background-repeat: no-repeat;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+}
+
+a:link {
+	color: #0B445F;
+}
+a:visited {
+	color: #0B445F;
+}
+a:hover {
+	color: #007A65;
+}
+a:active {
+	color: #0B445F;
+}
+.oneColFixCtrHdr #container {
+	width: 955px;
+	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+	border: 1px none #000000;
+	text-align: left; /* this overrides the text-align: center on the body element. */
+}
+
+.oneColFixCtrHdr #containermobile {
+	width: 100%;
+	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+	border: 1px none #000000;
+	text-align: left; /* this overrides the text-align: center on the body element. */
+}
+.oneColFixCtrHdr #header {
+	padding: 0;  /* this padding matches the left alignment of the elements in the divs that appear beneath it. If an image is used in the #header instead of text, you may want to remove the padding. */
+	color: #F00;
+}
+.oneColFixCtrHdr #header h1 {
+	margin: 0; /* zeroing the margin of the last element in the #header div will avoid margin collapse - an unexplainable space between divs. If the div has a border around it, this is not necessary as that also avoids the margin collapse */
+	padding: 10px 0; /* using padding instead of margin will allow you to keep the element away from the edges of the div */
+}
+.oneColFixCtrHdr #mainContent {
+	padding: 0 20px;
+}
+.oneColFixCtrHdr #footer {
+	padding: 0 10px;
+	background-color: #BCDCDE;
+}
+.oneColFixCtrHdr #footer p {
+	margin: 0; /* zeroing the margins of the first element in the footer will avoid the possibility of margin collapse - a space between divs */
+	padding: 10px 0; /* padding on this element will create space, just as the the margin would have, without the margin collapse issue */
+}
+.headers {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 19px;
+	font-weight: bold;
+	color: #003C55;
+}
+
+.headersmobile {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: x-large;
+	font-weight: bold;
+	color: #003C55;
+}
+.maintext {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 18px;
+}
+
+.maintextmobile {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 130%;
+}
+.maintextfront {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	color: #000;
+}
+.image-float-right {
+	margin-left: 7px;
+}
+.oneColFixCtrHdr #container #header table tr td p {
+	color: #F00;
+}

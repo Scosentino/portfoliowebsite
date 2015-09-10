@@ -1,0 +1,38 @@
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #FFFFFF;
+}
+.style1 {
+	color: #6b6b6b;
+	font-size: 11px;
+	font-family: tahoma;
+}
+.style2 {
+	color: #00AAB5;
+	font-size: 11px;
+	font-family: tahoma;
+}
+.style3 {
+	color: #00A0E4;
+	font-weight: bold;
+	font-size: 11px;
+	font-family: tahoma;
+}
+.style4 {
+	color: #707070;
+	font-size: 11px;
+	font-family: tahoma;
+}
+.style5 {
+	color: #67b82a;
+	font-size: 11px;
+	font-family: tahoma;
+}
+.style6 {	color: #00A0E4;
+	font-size: 11px;
+	font-family: tahoma;
+}
+.style6 {color: #009bc1; font-size: 11px; font-family: tahoma; font-weight: bold; }
